@@ -55,6 +55,9 @@ if __name__ == "__main__":
 
         startServer(host, port)
 
-    except Exception:
+    except IndexError:
         print("usage:", sys.argv[0], "<host> <port>")
         print("\tor", sys.argv[0], "local -- to run with predefined host and port")
+
+    except Exception as ex:
+        print("exception on initConn", ex)

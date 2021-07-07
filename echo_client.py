@@ -4,6 +4,8 @@ from _thread import *
 import threading
 import sys
 import socket
+import errno
+from socket import error as socket_error
 
 def initConnection(host, port):
 
@@ -38,6 +40,11 @@ if __name__ == "__main__":
 
         initConnection(host, port)
 
-    except Exception:
+    except IndexError:
         print("usage:", sys.argv[0], "<host> <port>")
         print("\tor", sys.argv[0], "local -- to run with predefined host and port")
+
+    except socket_error as serr: # Exceção para tentativa de conexão ao host com porta fechada no lado do servidor 
+        if serr.errno != errno.ECONNREFUSED:
+            raise serr
+        print("Connection refused. Port is perhaps closed on the server side.")
