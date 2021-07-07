@@ -11,6 +11,8 @@ def initConnection(host, port):
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((host, port))
+
+    print(f"Established connection with ({host}, {port})")
     
     try:
         while True:
@@ -47,4 +49,4 @@ if __name__ == "__main__":
     except socket_error as serr: # Exceção para tentativa de conexão ao host com porta fechada no lado do servidor 
         if serr.errno != errno.ECONNREFUSED:
             raise serr
-        print("Connection refused. Port is perhaps closed on the server side.")
+        print("Connection refused. Port is perhaps closed on the server-side.")

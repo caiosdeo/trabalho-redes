@@ -14,7 +14,7 @@ def threaded(conn, addr):
         if not data:
             # lock released on exit
             # print_lock.release() # ?
-            print("Connection closed with", addr)
+            print("Connection closed by", addr)
             break
 
         print("Echoing", repr(data), "to", addr)
