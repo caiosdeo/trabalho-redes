@@ -16,17 +16,27 @@ def initConnection(host, port):
     
     try:
         while True:
-            message = input("Enter a message: ")
+            command = input("> ")
+            command = command.strip() # Tratamento para remover espaços desnecessários no inicio e no final do comando 
 
-            sock.sendall(message.encode())
+            if(command == "quit"):
+                raise EOFError
+
+            sock.sendall(command.encode())
 
             data = sock.recv(1024)
-            print("Received from server: \"",data.decode(),"\"\n")
+            print(data.decode())
     
     except EOFError: # Ctrl + D
-        print("\n\nExiting")
+        print("Connection closed. Exiting")
     except KeyboardInterrupt: #Ctrl + C
-        print("\n\nCaught keyboard interrupt. Exiting")
+        print("Caught keyboard interrupt. Exiting")
+    except IOError as e:
+        if e.errno != errno.EPIPE:
+            raise e
+        print("Error sending the command. Server may be offline. Exiting")
+    except Exception as ex:
+        print("Exception on while", ex)
     finally:
         sock.close()
 
@@ -50,3 +60,6 @@ if __name__ == "__main__":
         if serr.errno != errno.ECONNREFUSED:
             raise serr
         print("Connection refused. Port is perhaps closed on the server-side.")
+
+    except Exception as ex:
+        print("Exception on initConn", ex)
