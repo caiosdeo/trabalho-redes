@@ -15,10 +15,8 @@ def threaded(conn, addr):
         data = conn.recv(1024)
         
         decoded = data.decode()
-        command = decoded.split(" ")[0]
-        arguments = ' '.join([str(substr) for substr in decoded.split(" ")[1:]]).strip()
-
-        print(f"decoded:{decoded}\t command:{command}\t message:\"{arguments}\"")
+        command = decoded.split(" ", 1)[0] # Comando vai até o primeiro espaço
+        arguments = decoded.split(" ", 1)[1].strip() # Do primeiro espaço em diante são argumentos/parametros do comando
 
         if not data or command == "quit":
             # lock released on exit
